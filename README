@@ -1,21 +1,16 @@
+------
+Данный стенд о простой демонстрации salt, как возможная замена ansible!!!
+3 ноды: 1 мастер и 2 миньона, через миньоны ставятся nginx + добавление правила
+в фаервол на 2 миньон
+
+TODO:
 - перейти в директорию с проектом и запустить
-vagrant up
+vagrant up && sleep 60 && bash install_salt.sh
+(создастся структура стенда, скрипт установит salt на машины и наладит между ними связь)
 
+- зайти на мастер и запустить:
+ssh vagrant@192.168.6.2 "sudo salt '*' state.apply"
 
-
-
-
-
-sudo curl -fsSL -o /usr/share/keyrings/salt-archive-keyring.gpg https://repo.saltproject.io/py3/ubuntu/20.04/amd64/latest/salt-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg arch=amd64] https://repo.saltproject.io/py3/ubuntu/20.04/amd64/latest focal main" | sudo tee /etc/apt/sources.list.d/salt.list
-sudo apt update
-sudo apt install salt-master -y
-sudo apt install salt-minion -y
-
-/etc/salt/master
-auto_accept: True
-sudo systemctl restart salt-master
-
-/etc/salt/minion
-master: 192.168.6.2
-sudo systemctl restart salt-minion
+- проверка
+curl -XGET "http://192.168.6.3:80" (должно вернуть стартовую страницу)
+curl -XGET "http://192.168.6.4:80" (доступ должен быть закрыт по 80 порту)
